@@ -11,11 +11,11 @@
 #define LED_RED_PIN      21
 #define PIR_PIN          23 
 
-// --- CONFIGURAÇÕES GERAIS ---
+// --- CONFIGURAÇÕES GERAIS 
 #define PUBLISH_PERIOD   10000 
 unsigned long lastTime = 0;
 
-// --- VARIÁVEIS DE CONTROLE ---
+// --- VARIÁVEIS DE CONTROLE DO MONITORAMENTO ---
 unsigned long lastMotionTime = 0;
 const long motionCooldown = 5000; 
 bool lastMotionState = false;     
@@ -139,7 +139,7 @@ void setup() {
     device.setName("ESP32-Wokwi-01");
     device.setManufacturer("Rickson Lima");
     device.setModel("ESP32-Wokwi");
-    device.setSoftwareVersion("1.3.0"); // Versão incrementada
+    device.setSoftwareVersion("1.3.0"); 
     device.enableSharedAvailability();
     device.setAvailability(true); 
     device.enableLastWill();
@@ -169,7 +169,6 @@ void setup() {
 void loop() {
     mqtt.loop();
 
-    // LÓGICA CORRIGIDA ABAIXO
     bool currentMotionState = digitalRead(PIR_PIN);
     
     // Compara o estado ATUAL com o ÚLTIMO estado conhecido
@@ -177,18 +176,17 @@ void loop() {
         // Se mudou, atualiza o Home Assistant
         motionSensor.setState(currentMotionState);
 
-        if (currentMotionState == true) { // Se o estado mudou para "com movimento"
+        if (currentMotionState == true) { 
             Serial.println("Movimento detectado!");
             digitalWrite(LED_RED_PIN, HIGH);
-            led_red.setState(true); // Atualiza o estado do switch no HA
+            led_red.setState(true); 
             sendWhatsAppMessage("🚨 Alerta! Movimento detectado pelo sensor da sala.");
-        } else { // Se o estado mudou para "sem movimento"
+        } else { 
             Serial.println("Movimento cessou.");
             digitalWrite(LED_RED_PIN, LOW);
-            led_red.setState(false); // Atualiza o estado do switch no HA
+            led_red.setState(false); 
         }
 
-        // IMPORTANTE: Atualiza o último estado conhecido para o estado atual
         lastMotionState = currentMotionState;
     }
 
