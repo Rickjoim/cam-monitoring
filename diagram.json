@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "author": "Rickson Lima",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    { "type": "wokwi-dht22", "id": "dht1", "top": -80, "left": -150, "attrs": {} },
+    {
+      "type": "wokwi-pir-motion-sensor",
+      "id": "pir1",
+      "top": 120,
+      "left": -150,
+      "attrs": { "label": "Sensor de Movimento" }
+    },
+    {
+      "type": "wokwi-rgb-led",
+      "id": "rgb1",
+      "top": -24.8,
+      "left": 193.1,
+      "attrs": { "common": "cathode" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serial:RX", "", [] ],
+    [ "esp:RX", "$serial:TX", "", [] ],
+    [ "dht1:VCC", "esp:VIN", "red", [ "h0" ] ],
+    [ "dht1:GND", "esp:GND", "black", [ "h0" ] ],
+    [ "dht1:SDA", "esp:D13", "green", [ "h0" ] ],
+    [ "pir1:VCC", "esp:VIN", "red", [ "v0" ] ],
+    [ "pir1:GND", "esp:GND", "black", [ "v0" ] ],
+    [ "pir1:OUT", "esp:D23", "orange", [ "h0" ] ],
+    [ "rgb1:R", "esp:D21", "red", [ "v0", "h-20" ] ],
+    [ "rgb1:G", "esp:D19", "green", [ "v0", "h-20" ] ],
+    [ "rgb1:B", "esp:D18", "blue", [ "v0", "h-20" ] ],
+    [ "rgb1:COM", "esp:GND", "black", [ "v0", "h-40" ] ]
+  ],
+  "dependencies": {}
+}
